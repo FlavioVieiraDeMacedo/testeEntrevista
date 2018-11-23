@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "Yourviews";
+}
+
+<div class="container">
+    <div class="col-md-12">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search product by id" id="id_input">
+            <div class="input-group-btn">
+                <button class="btn btn-default" type="submit" onclick="RefreshView()">
+                    <i class="glyphicon glyphicon-search"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="col-md-12"id="panelInformations" hidden>
+        <div class="panel panel-primary">
+            <div class="panel-heading" id="titlePanel" >Product elements</div>
+            <div class="panel-body">
+                <p id="id" hidden></p>
+                <p id="name" hidden></p>
+                <p id="price" hidden></p>
+                <p id="status" hidden></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    function RefreshView() {        
+        var a = $("#id_input").val();
+        var url = '@Url.Action("Index", "Product")/?IdProduct=' + $("#id_input").val();
+        $.get(url, function (data) {   
+            $("#panelInformations").show();
+            if (data.Id != null) {
+                $("#id").text("Id: " + data.Id);
+                $("#id").show();
+                $("#name").text("Name: " + data.Name);
+                $("#name").show();
+                $("#price").text("Price: $" + parseFloat(data.Price));
+                $("#price").show();
+                $("#status").hide();
+            } else {
+                $("#status").text("Status: " + data.Status);
+                $("#id").hide();
+                $("#name").hide();
+                $("#price").hide();
+                $("#status").show();
+            }
+            
+        }, "json");
+    }
+</script>
